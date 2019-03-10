@@ -2,7 +2,7 @@
 const shell = require('shelljs');
 const yaml = require('js-yaml');
 const fs   = require('fs');
-const runner = require('../utils/runner');
+const serviceRunner = require('../utils/servicerunner');
 const githubPath = '~/Documents/Github/'
 
 
@@ -18,7 +18,7 @@ module.exports = (args) => {
       console.log(`starting service ${serviceName}...`);
       
       const location = service.location ? service.location : defaultLocation;
-      runner(service.command, location, serviceName, service.terminalWindow);
+      serviceRunner(service.command, location, serviceName, service.terminalWindow);
     }
   }
   catch (e) {
