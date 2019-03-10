@@ -1,0 +1,20 @@
+services:
+  webpack-dev-server: 
+    command: node_modules/.bin/webpack-dev-server --config ./config/webpack/development.js
+    terminalWindow: true
+
+  rails-server: 
+    command: rails s
+    terminalWindow: true
+
+  redis-server:
+    command: redis-server
+    terminalWindow: true
+
+  sidekiq:
+    command: bundle exec sidekiq -t 25 -c 2 -q default -q mailers
+    terminalWindow: true
+
+  goToDirectory:
+    command: bash
+    terminalWindow: true
