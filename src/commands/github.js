@@ -14,7 +14,7 @@ module.exports = (args) => {
   try {
     const config = yaml.safeLoad(fs.readFileSync('./maestro.yml', 'utf8'));
     
-    for (const [serviceName, service] of Object.entries(config.services)) {
+    for ( const [serviceName, service] of Object.entries(config.services) ) {
       console.log(`starting service ${serviceName}...`);
       
       const location = service.location ? service.location : defaultLocation;
