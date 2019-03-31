@@ -1,4 +1,6 @@
 # maestro
+[![Build Status](https://travis-ci.org/cornu-ammonis/maestro.svg?branch=master)](https://travis-ci.org/cornu-ammonis/maestro) [![Coverage Status](https://coveralls.io/repos/github/cornu-ammonis/maestro/badge.svg?branch=testing-setup)](https://coveralls.io/github/cornu-ammonis/maestro?branch=testing-setup)
+
 maestro is a flexible tool for running repetitive command line tasks. Its core use case is to spin up all the services/servers for a development environment. The current implementation works at the level of one GitHub repo with a maestro.yml defining all services. maestro is designed for OSX but I may add cross-platform capabilities. 
 
 ## Installation
