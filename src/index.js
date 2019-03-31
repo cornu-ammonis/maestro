@@ -1,9 +1,13 @@
 'use strict';
 const minimist = require('minimist');
+const { log } = require('../src/log');
 
+const slicedArgs = () => {
+  log(process.argv);
+  return minimist(process.argv.slice(2)); // eliminates 'node maestro' which will always precede real args
+}
 
-module.exports = () => {
-  const args = minimist(process.argv.slice(2)); // eliminates 'node maestro' which will always precede real args
+module.exports = (args = slicedArgs()) => {
   const cmd = args._[0] // base command, may be empty by default
 
   switch(cmd) {
@@ -14,7 +18,7 @@ module.exports = () => {
       if (args.g) 
         require('./commands/github')(args);
       else
-        console.log("expected -g flag to specify github repo name");
+        log("expected -g flag to specify github repo name");
       break
   }
 }

@@ -26,4 +26,6 @@ module.exports = (command, location, name, terminalWindow) => {
     shell.echo(`Error running ${name}`);
     shell.exit(1);
   }
+
+  return command;
 }

@@ -5,8 +5,16 @@
   "bin": {
     "maestro": "bin/maestro"
   },
-  "scripts": {},
-  "devDependencies": {},
+  "scripts": {
+    "test": "nyc ava",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "devDependencies": {
+    "ava": "^1.4.1",
+    "coveralls": "^3.0.3",
+    "nyc": "^13.3.0",
+    "testdouble": "^3.11.0"
+  },
   "dependencies": {
     "js-yaml": "^3.12.2",
     "minimist": "^1.2.0",
