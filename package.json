@@ -6,10 +6,13 @@
     "maestro": "bin/maestro"
   },
   "scripts": {
-    "test": "ava"
+    "test": "nyc ava",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "devDependencies": {
     "ava": "^1.4.1",
+    "coveralls": "^3.0.3",
+    "nyc": "^13.3.0",
     "testdouble": "^3.11.0"
   },
   "dependencies": {
