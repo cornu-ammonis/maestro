@@ -5,8 +5,12 @@
   "bin": {
     "maestro": "bin/maestro"
   },
-  "scripts": {},
-  "devDependencies": {},
+  "scripts": {
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "^1.4.1"
+  },
   "dependencies": {
     "js-yaml": "^3.12.2",
     "minimist": "^1.2.0",
