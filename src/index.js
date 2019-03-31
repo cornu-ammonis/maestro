@@ -1,9 +1,13 @@
 'use strict';
 const minimist = require('minimist');
-const { log } = require('./log');
+const { log } = require('../src/log');
 
-module.exports = () => {
-  const args = minimist(process.argv.slice(2)); // eliminates 'node maestro' which will always precede real args
+const slicedArgs = () => {
+  log(process.argv);
+  return minimist(process.argv.slice(2)); // eliminates 'node maestro' which will always precede real args
+}
+
+module.exports = (args = slicedArgs()) => {
   const cmd = args._[0] // base command, may be empty by default
 
   switch(cmd) {

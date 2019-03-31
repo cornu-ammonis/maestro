@@ -3,6 +3,7 @@ const shell = require('shelljs');
 const yaml = require('js-yaml');
 const fs   = require('fs');
 const serviceRunner = require('../utils/servicerunner');
+const { log } = require('../log');
 
 const githubPath = '~/Documents/Github/'
 
