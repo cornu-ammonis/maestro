@@ -1,5 +1,5 @@
 # maestro
-maestro is a flexible tool for running repetitive command line tasks. Its core use case is to spin up all the services/servers for a development environment. 
+maestro is a flexible tool for running repetitive command line tasks. Its core use case is to spin up all the services/servers for a development environment. The current implementation works at the level of one GitHub repo with a maestro.yml defining all services. maestro is designed for OSX but I may add cross-platform capabilities. 
 
 ## Installation
 
