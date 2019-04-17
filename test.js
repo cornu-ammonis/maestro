@@ -62,4 +62,30 @@ test ('servicerunner executes and returns command string with correct incorporat
   td.verify(testShell.exec(expectedCommandStringTerminalFalse));
 });
 
+test ('if shellExec returns nonzero status code, program echos error and terminates gracefully', t => {
+  // ** setup **
+  const stubExec = td.func();
+  td.when(stubExec(td.matchers.isA(String))).thenReturn({code: 1});
+
+  const stubEcho = td.func();
+  const stubExit = td.func();
+
+  const testShell = td.replace('shelljs', {
+    exec: stubExec,
+    echo: stubEcho,
+    exit: stubExit
+  });
+
+  const serviceRunner = require('./src/utils/servicerunner');
+
+  const returnedCommand = serviceRunner(command, location, name, terminalWindow);
+  t.is(returnedCommand, expectedCommandString);
+
+  td.verify(stubExec(expectedCommandString));
+
+  td.verify(stubEcho(`Error running ${name}`));
+
+  td.verify(stubExit(1));
+})
+
 
