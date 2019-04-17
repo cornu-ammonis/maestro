@@ -13,6 +13,10 @@ test.afterEach(t => {
   td.reset();
 })
 
+test ('entryPoint is a function', t => {
+  t.is(typeof entryPoint, 'function');
+});
+
 test ('entryPoint prints expected use of -g flag if improperly specified ', t => {
   process.argv = [ '', '', '' ]
   entryPoint();
@@ -21,10 +25,18 @@ test ('entryPoint prints expected use of -g flag if improperly specified ', t =>
   t.pass();
 });
 
-test ('entryPoint is a function', t => {
-  t.is(typeof entryPoint, 'function');
-});
+test ('entryPoint passes args to github module if -g is specified', t => {
+  const testG = td.replace('./src/commands/github');
 
+  // argsv is processed to remove first two arguments (normally 'node', 'index.js')
+  process.argv = ['', '', '-g', 'some arg'];
+  entryPoint();
+
+  const expectedPassedArgs = { _: [], g: "some arg" };
+
+  td.verify(testG(expectedPassedArgs));
+  t.pass();
+})
 
 
 // Service Runner Tests
@@ -41,6 +53,7 @@ const name = 'somename';
 const terminalWindow = true;
 
 const expectedCommandString = `echo "cd ${location} && ${command}" > ${name}.command; chmod +x ${name}.command; open ${name}.command;`;
+const expectedCommandStringTerminalFalse = `${command}`; // if terminalWindow == false, maestro just runs the command
 
 test ('servicerunner executes and returns command string with correct incorporation of arguments', t => {
   const stubExec = td.func();
@@ -50,12 +63,41 @@ test ('servicerunner executes and returns command string with correct incorporat
   });
 
   const serviceRunner = require('./src/utils/servicerunner');
- 
 
   const returnedCommand = serviceRunner(command, location, name, terminalWindow);
 
   t.is(returnedCommand, expectedCommandString);
   td.verify(testShell.exec(expectedCommandString));
+
+  const returnedCommandTerminalFalse = serviceRunner(command, location, name, false);
+  t.is(returnedCommandTerminalFalse, expectedCommandStringTerminalFalse);
+  td.verify(testShell.exec(expectedCommandStringTerminalFalse));
 });
+
+test ('if shellExec returns nonzero status code, program echos error and terminates gracefully', t => {
+  // ** setup **
+  const stubExec = td.func();
+  td.when(stubExec(td.matchers.isA(String))).thenReturn({code: 1});
+
+  const stubEcho = td.func();
+  const stubExit = td.func();
+
+  const testShell = td.replace('shelljs', {
+    exec: stubExec,
+    echo: stubEcho,
+    exit: stubExit
+  });
+
+  const serviceRunner = require('./src/utils/servicerunner');
+
+  const returnedCommand = serviceRunner(command, location, name, terminalWindow);
+  t.is(returnedCommand, expectedCommandString);
+
+  td.verify(stubExec(expectedCommandString));
+
+  td.verify(stubEcho(`Error running ${name}`));
+
+  td.verify(stubExit(1));
+})
 
 
