@@ -41,6 +41,7 @@ const name = 'somename';
 const terminalWindow = true;
 
 const expectedCommandString = `echo "cd ${location} && ${command}" > ${name}.command; chmod +x ${name}.command; open ${name}.command;`;
+const expectedCommandStringTerminalFalse = `${command}`; // if terminalWindow == false, maestro just runs the command
 
 test ('servicerunner executes and returns command string with correct incorporation of arguments', t => {
   const stubExec = td.func();
@@ -50,12 +51,15 @@ test ('servicerunner executes and returns command string with correct incorporat
   });
 
   const serviceRunner = require('./src/utils/servicerunner');
- 
 
   const returnedCommand = serviceRunner(command, location, name, terminalWindow);
 
   t.is(returnedCommand, expectedCommandString);
   td.verify(testShell.exec(expectedCommandString));
+
+  const returnedCommandTerminalFalse = serviceRunner(command, location, name, false);
+  t.is(returnedCommandTerminalFalse, expectedCommandStringTerminalFalse);
+  td.verify(testShell.exec(expectedCommandStringTerminalFalse));
 });
 
 
