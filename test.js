@@ -13,6 +13,10 @@ test.afterEach(t => {
   td.reset();
 })
 
+test ('entryPoint is a function', t => {
+  t.is(typeof entryPoint, 'function');
+});
+
 test ('entryPoint prints expected use of -g flag if improperly specified ', t => {
   process.argv = [ '', '', '' ]
   entryPoint();
@@ -21,10 +25,18 @@ test ('entryPoint prints expected use of -g flag if improperly specified ', t =>
   t.pass();
 });
 
-test ('entryPoint is a function', t => {
-  t.is(typeof entryPoint, 'function');
-});
+test ('entryPoint passes args to github module if -g is specified', t => {
+  const testG = td.replace('./src/commands/github');
 
+  // argsv is processed to remove first two arguments (normally 'node', 'index.js')
+  process.argv = ['', '', '-g', 'some arg'];
+  entryPoint();
+
+  const expectedPassedArgs = { _: [], g: "some arg" };
+
+  td.verify(testG(expectedPassedArgs));
+  t.pass();
+})
 
 
 // Service Runner Tests
